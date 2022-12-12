@@ -52,7 +52,9 @@ st.title('Generate graph')
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    generateHtmlGraph(uploaded_file, htmlPath)
+    
+    #generateHtmlGraph(uploaded_file, htmlPath)
+    generateHtmlGraph("data/FaultsTracking.csv")
 
     # Create visualisation on streamlit sharing
     
