@@ -1,0 +1,38 @@
+﻿EpisodeID,Origin,Destination,Weight
+1,FaultTwo,Call centre,1
+1,Call centre,Team one,1
+1,Team one,User FaultTwo,1
+1,User FaultTwo,Resolved,1
+2,FaultTwo,Call centre,1
+2,Call centre,Team one,1
+2,Team one,User FaultTwo,1
+2,User FaultTwo,Resolved,1
+3,FaultTwo,Call centre,1
+3,Call centre,Team one,1
+3,Team one,User FaultTwo,1
+3,User FaultTwo,Not resolved,1
+4,FaultTwo,Call centre,1
+4,Call centre,Team one,1
+4,Team one,Server reboot,1
+4,Server reboot,Resolved,1
+6,FaultTwo,Call centre,1
+6,Call centre,Team one,1
+6,Team one,Server reboot,1
+6,Server reboot,Technician,1
+6,Technician,Resolved,1
+5,FaultTwo,Call centre,1
+5,Call centre,Team two,1
+5,Team two,Technician,1
+5,Technician,Resolved,1
+7,FaultTwo,Call centre,1
+7,Call centre,Team two,1
+7,Team two,Technician,1
+7,Technician,Not resolved,1
+8,FaultTwo,App,1
+8,App,Resolved,1
+9,FaultTwo,App,1
+9,App,Team two,1
+9,Team two,Technician,1
+9,Technician,Team one,1
+9,Team one,Server reboot,1
+9,Server reboot,Resolved,1
