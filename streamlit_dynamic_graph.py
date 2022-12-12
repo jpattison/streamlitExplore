@@ -40,7 +40,7 @@ def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
 
     #nt.show_buttons(filter_=['generate options'])
     #nt.show_buttons(filter_=True)
-    nt.save_graph(htmlPath, local=False)
+    nt.save_graph(htmlPath)
 
 #generateHtmlGraph("data/FaultsTracking.csv")
 #generateHtmlGraph("data/FaultsTrackingTwo.csv")
