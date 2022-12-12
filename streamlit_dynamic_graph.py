@@ -62,4 +62,4 @@ if uploaded_file is not None:
     HtmlFile = open(htmlPath,'r',encoding='utf-8')
 
     # Load HTML into HTML component for display on Streamlit
-    components.html(HtmlFile.read(), height=500)
+    components.html(HtmlFile.read()) #, height=500
