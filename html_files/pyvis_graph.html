@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 465px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "Amitriptyline", "label": "Amitriptyline", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Glipizide", "label": "Glipizide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dicoumarol", "label": "Dicoumarol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Floxuridine", "label": "Floxuridine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tranylcypromine", "label": "Tranylcypromine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Gliclazide", "label": "Gliclazide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Troglitazone", "label": "Troglitazone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin aspart", "label": "Insulin aspart", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Repaglinide", "label": "Repaglinide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Chloramphenicol", "label": "Chloramphenicol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Posaconazole", "label": "Posaconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Probenecid", "label": "Probenecid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Vildagliptin", "label": "Vildagliptin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Aspirin", "label": "Aspirin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Testosterone", "label": "Testosterone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Clarithromycin", "label": "Clarithromycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Nadolol", "label": "Nadolol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fluconazole", "label": "Fluconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin glargine", "label": "Insulin glargine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Leuprolide", "label": "Leuprolide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Gliquidone", "label": "Gliquidone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Canagliflozin", "label": "Canagliflozin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Chlorpropamide", "label": "Chlorpropamide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Stanolone", "label": "Stanolone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Acetohexamide", "label": "Acetohexamide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin glulisine", "label": "Insulin glulisine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Phenelzine", "label": "Phenelzine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dabrafenib", "label": "Dabrafenib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Carbocisteine", "label": "Carbocisteine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Pegvisomant", "label": "Pegvisomant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Miconazole", "label": "Miconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin detemir", "label": "Insulin detemir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Voriconazole", "label": "Voriconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Alogliptin", "label": "Alogliptin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Colesevelam", "label": "Colesevelam", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Mecamylamine", "label": "Mecamylamine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Sitagliptin", "label": "Sitagliptin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Linagliptin", "label": "Linagliptin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lumacaftor", "label": "Lumacaftor", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Cimetidine", "label": "Cimetidine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ceritinib", "label": "Ceritinib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Mifepristone", "label": "Mifepristone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lipoic acid", "label": "Lipoic acid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Exenatide", "label": "Exenatide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dexketoprofen", "label": "Dexketoprofen", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Secobarbital", "label": "Secobarbital", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Paroxetine", "label": "Paroxetine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin human", "label": "Insulin human", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Phenytoin", "label": "Phenytoin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Metreleptin", "label": "Metreleptin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Insulin lispro", "label": "Insulin lispro", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Metformin", "label": "Metformin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fenofibrate", "label": "Fenofibrate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Porfimer sodium", "label": "Porfimer sodium", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Verteporfin", "label": "Verteporfin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Trichlormethiazide", "label": "Trichlormethiazide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Sulfisoxazole", "label": "Sulfisoxazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ethanol", "label": "Ethanol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Glimepiride", "label": "Glimepiride", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ranitidine", "label": "Ranitidine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Rifampicin", "label": "Rifampicin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Oxandrolone", "label": "Oxandrolone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Glyburide", "label": "Glyburide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tolbutamide", "label": "Tolbutamide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Sparfloxacin", "label": "Sparfloxacin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Salicylic acid", "label": "Salicylic acid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Saxagliptin", "label": "Saxagliptin", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "Amitriptyline", "to": "Glipizide", "width": 1}, {"from": "Glipizide", "to": "Dicoumarol", "width": 1}, {"from": "Glipizide", "to": "Floxuridine", "width": 1}, {"from": "Glipizide", "to": "Tranylcypromine", "width": 1}, {"from": "Glipizide", "to": "Gliclazide", "width": 1}, {"from": "Glipizide", "to": "Troglitazone", "width": 1}, {"from": "Glipizide", "to": "Insulin aspart", "width": 1}, {"from": "Glipizide", "to": "Repaglinide", "width": 1}, {"from": "Glipizide", "to": "Chloramphenicol", "width": 1}, {"from": "Glipizide", "to": "Posaconazole", "width": 1}, {"from": "Glipizide", "to": "Probenecid", "width": 1}, {"from": "Glipizide", "to": "Vildagliptin", "width": 1}, {"from": "Glipizide", "to": "Aspirin", "width": 1}, {"from": "Glipizide", "to": "Testosterone", "width": 1}, {"from": "Glipizide", "to": "Clarithromycin", "width": 1}, {"from": "Glipizide", "to": "Nadolol", "width": 1}, {"from": "Glipizide", "to": "Fluconazole", "width": 1}, {"from": "Glipizide", "to": "Insulin glargine", "width": 1}, {"from": "Glipizide", "to": "Leuprolide", "width": 1}, {"from": "Glipizide", "to": "Gliquidone", "width": 1}, {"from": "Glipizide", "to": "Canagliflozin", "width": 1}, {"from": "Glipizide", "to": "Chlorpropamide", "width": 1}, {"from": "Glipizide", "to": "Stanolone", "width": 1}, {"from": "Glipizide", "to": "Acetohexamide", "width": 1}, {"from": "Glipizide", "to": "Insulin glulisine", "width": 1}, {"from": "Glipizide", "to": "Phenelzine", "width": 1}, {"from": "Glipizide", "to": "Dabrafenib", "width": 1}, {"from": "Glipizide", "to": "Carbocisteine", "width": 1}, {"from": "Glipizide", "to": "Pegvisomant", "width": 1}, {"from": "Glipizide", "to": "Miconazole", "width": 1}, {"from": "Glipizide", "to": "Insulin detemir", "width": 1}, {"from": "Glipizide", "to": "Voriconazole", "width": 1}, {"from": "Glipizide", "to": "Alogliptin", "width": 1}, {"from": "Glipizide", "to": "Colesevelam", "width": 1}, {"from": "Glipizide", "to": "Mecamylamine", "width": 1}, {"from": "Glipizide", "to": "Sitagliptin", "width": 1}, {"from": "Glipizide", "to": "Linagliptin", "width": 1}, {"from": "Glipizide", "to": "Lumacaftor", "width": 1}, {"from": "Glipizide", "to": "Cimetidine", "width": 1}, {"from": "Glipizide", "to": "Ceritinib", "width": 1}, {"from": "Glipizide", "to": "Mifepristone", "width": 1}, {"from": "Glipizide", "to": "Lipoic acid", "width": 1}, {"from": "Glipizide", "to": "Exenatide", "width": 1}, {"from": "Glipizide", "to": "Dexketoprofen", "width": 1}, {"from": "Glipizide", "to": "Secobarbital", "width": 1}, {"from": "Glipizide", "to": "Paroxetine", "width": 1}, {"from": "Glipizide", "to": "Insulin human", "width": 1}, {"from": "Glipizide", "to": "Phenytoin", "width": 1}, {"from": "Glipizide", "to": "Metreleptin", "width": 1}, {"from": "Glipizide", "to": "Insulin lispro", "width": 1}, {"from": "Glipizide", "to": "Metformin", "width": 1}, {"from": "Glipizide", "to": "Fenofibrate", "width": 1}, {"from": "Glipizide", "to": "Porfimer sodium", "width": 1}, {"from": "Glipizide", "to": "Verteporfin", "width": 1}, {"from": "Glipizide", "to": "Trichlormethiazide", "width": 1}, {"from": "Glipizide", "to": "Sulfisoxazole", "width": 1}, {"from": "Glipizide", "to": "Ethanol", "width": 1}, {"from": "Glipizide", "to": "Glimepiride", "width": 1}, {"from": "Glipizide", "to": "Ranitidine", "width": 1}, {"from": "Glipizide", "to": "Rifampicin", "width": 1}, {"from": "Glipizide", "to": "Oxandrolone", "width": 1}, {"from": "Glipizide", "to": "Glyburide", "width": 1}, {"from": "Glipizide", "to": "Tolbutamide", "width": 1}, {"from": "Glipizide", "to": "Sparfloxacin", "width": 1}, {"from": "Glipizide", "to": "Salicylic acid", "width": 1}, {"from": "Glipizide", "to": "Saxagliptin", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.33,
+            "damping": 0.95,
+            "nodeDistance": 420,
+            "springConstant": 0.1,
+            "springLength": 110
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
