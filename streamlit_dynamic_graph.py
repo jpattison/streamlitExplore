@@ -40,12 +40,12 @@ def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
 
     #nt.show_buttons(filter_=['generate options'])
     #nt.show_buttons(filter_=True)
-    nt.save_graph(htmlPath)
+    nt.save_graph(f'{htmlPath}')
 
 #generateHtmlGraph("data/FaultsTracking.csv")
 #generateHtmlGraph("data/FaultsTrackingTwo.csv")
 
-htmlPath = '/tmp/nx.html'
+htmlPath = '/tmp/nx_1.html'
 
 # Set header title
 st.title('Generate graph')
