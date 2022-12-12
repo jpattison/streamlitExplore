@@ -18,6 +18,10 @@ import streamlit.components.v1 as components
 import pandas as pd
 import networkx as nx
 from pyvis.network import Network
+
+
+
+
 # Read dataset
 df_interact = pd.read_csv('data/processed_drug_interactions.csv')
 
@@ -60,8 +64,11 @@ else:
 
 
 	#Create visualisation locally
-
 	path = 'html_files'
+
+	# Create visualisation on streamlit sharing
+	path = '/tmp'
+
 	drug_net.save_graph(f'{path}/pyvis_graph.html')
 	HtmlFile = open(f'{path}/pyvis_graph.html','r',encoding='utf-8')
 
