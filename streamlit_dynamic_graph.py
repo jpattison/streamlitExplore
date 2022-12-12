@@ -45,7 +45,7 @@ def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
 #generateHtmlGraph("data/FaultsTracking.csv")
 #generateHtmlGraph("data/FaultsTrackingTwo.csv")
 
-htmlPath = '/tmp/nx_1.html'
+htmlPath = 'tmp/nx_1.html'
 
 # Set header title
 st.title('Generate graph')
