@@ -12,38 +12,38 @@ dfFaults = pd.read_csv("data/FaultsTracking.csv")
 #print(dfFaults.head(10))
 
 def traceProcesses(dfInput):
-	dfGrouped = dfInput.groupby(["Origin", "Destination"]).agg(value=("Weight",np.sum), title=("Weight", np.sum))
-	dfGrouped = dfGrouped.reset_index()
-	return dfGrouped
+    dfGrouped = dfInput.groupby(["Origin", "Destination"]).agg(value=("Weight",np.sum), title=("Weight", np.sum))
+    dfGrouped = dfGrouped.reset_index()
+    return dfGrouped
 
 def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
-	
-	dfInput = pd.read_csv(csvSource)
+    
+    dfInput = pd.read_csv(csvSource)
 
-	dfInputGrouped = traceProcesses(dfInput)
+    dfInputGrouped = traceProcesses(dfInput)
 
-	#print(dfInputGrouped.head(10))
-
-
-	# Create graph
-	if isDirected:
-		createUsing=nx.DiGraph()
-	else:
-		createUsing=nx.Graph()
+    #print(dfInputGrouped.head(10))
 
 
-	G = nx.from_pandas_edgelist(dfInputGrouped, 'Origin', 'Destination', ['title', 'value'], create_using=createUsing)
+    # Create graph
+    if isDirected:
+        createUsing=nx.DiGraph()
+    else:
+        createUsing=nx.Graph()
 
-	nt = Network('500px', '500px', bgcolor='#222222', font_color='white', select_menu=True, directed = isDirected)
-	# Take Networkx graph and translate it to a PyVis graph format
-	nt.from_nx(G)
 
-	#nt.show_buttons(filter_=['generate options'])
-	#nt.show_buttons(filter_=True)
-	nt.save_graph(htmlPath, local=False)
+    G = nx.from_pandas_edgelist(dfInputGrouped, 'Origin', 'Destination', ['title', 'value'], create_using=createUsing)
+
+    nt = Network('500px', '500px', bgcolor='#222222', font_color='white', select_menu=True, directed = isDirected)
+    # Take Networkx graph and translate it to a PyVis graph format
+    nt.from_nx(G)
+
+    #nt.show_buttons(filter_=['generate options'])
+    #nt.show_buttons(filter_=True)
+    nt.save_graph(htmlPath, local=False)
 
 #generateHtmlGraph("data/FaultsTracking.csv")
-generateHtmlGraph("data/FaultsTrackingTwo.csv")
+#generateHtmlGraph("data/FaultsTrackingTwo.csv")
 
 htmlPath = '/tmp/nx.html'
 
@@ -52,7 +52,7 @@ st.title('Generate graph')
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-	generateHtmlGraph(uploaded_file, htmlPath)
+    generateHtmlGraph(uploaded_file, htmlPath)
 
     # Create visualisation on streamlit sharing
     
