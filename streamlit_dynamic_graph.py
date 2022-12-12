@@ -3,6 +3,8 @@ import numpy as np
 
 from pyvis.network import Network
 import networkx as nx
+import streamlit as st
+import streamlit.components.v1 as components
 
 isDirected = False
 
@@ -14,7 +16,7 @@ def traceProcesses(dfInput):
 	dfGrouped = dfGrouped.reset_index()
 	return dfGrouped
 
-def generateHtmlGraph(csvSource, isDirected=False):
+def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
 	
 	dfInput = pd.read_csv(csvSource)
 
@@ -38,7 +40,24 @@ def generateHtmlGraph(csvSource, isDirected=False):
 
 	#nt.show_buttons(filter_=['generate options'])
 	#nt.show_buttons(filter_=True)
-	nt.write_html('nx.html', local=False)
+	nt.save_graph(htmlPath, local=False)
 
 #generateHtmlGraph("data/FaultsTracking.csv")
 generateHtmlGraph("data/FaultsTrackingTwo.csv")
+
+htmlPath = '/tmp/nx.html'
+
+# Set header title
+st.title('Generate graph')
+
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+	generateHtmlGraph(uploaded_file, htmlPath)
+
+    # Create visualisation on streamlit sharing
+    
+
+    HtmlFile = open(htmlPath,'r',encoding='utf-8')
+
+    # Load HTML into HTML component for display on Streamlit
+    components.html(HtmlFile.read(), height=500)
