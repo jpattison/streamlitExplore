@@ -6,8 +6,6 @@ import networkx as nx
 import streamlit as st
 import streamlit.components.v1 as components
 
-windowSize = 900
-
 dfFaults = pd.read_csv("data/FaultsTracking.csv")
 #print(dfFaults.head(10))
 
@@ -15,6 +13,15 @@ def traceProcesses(dfInput):
     dfGrouped = dfInput.groupby(["Origin", "Destination"]).agg(value=("Weight",np.sum), title=("Weight", np.sum))
     dfGrouped = dfGrouped.reset_index()
     return dfGrouped
+
+def addNodeText(graph):
+    attDict = {}
+    for nodeKey in graph.nodes:
+        hoverText = f"Filler text"
+        attDict[nodeKey] = hoverText
+
+    nx.set_node_attributes(graph, attDict, name="title")
+    return graph
 
 def generateHtmlGraph(htmlPath, csvSource, height, width, isDirected=False):
     dfInput = pd.read_csv(csvSource)
@@ -26,6 +33,7 @@ def generateHtmlGraph(htmlPath, csvSource, height, width, isDirected=False):
         createUsing=nx.Graph()
 
     G = nx.from_pandas_edgelist(dfInputGrouped, 'Origin', 'Destination', ['title', 'value'], create_using=createUsing)
+    G = addNodeText(G)
 
     height = f"{height}px"
     width = f"{width}px"
@@ -36,7 +44,8 @@ def generateHtmlGraph(htmlPath, csvSource, height, width, isDirected=False):
     nt.write_html(htmlPath, local=False)
     #nt.show(htmlPath)
 
-
+#Run this to test pyVis only (comment out below lines)
+#generateHtmlGraph("tmp.html", "data/FaultsTracking.csv", 500, 900, False)
 
 # Set header title
 st.title('Upload your csv to generate a graph')
@@ -53,3 +62,4 @@ if uploaded_file is not None:
     HtmlFile = open(htmlPath,'r',encoding='utf-8')
     # Load HTML into HTML component for display on Streamlit
     components.html(HtmlFile.read(), height = height,width=width)
+
