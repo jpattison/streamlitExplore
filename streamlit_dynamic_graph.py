@@ -6,7 +6,8 @@ import networkx as nx
 import streamlit as st
 import streamlit.components.v1 as components
 
-isDirected = False
+isDirected = True
+windowSize = 900
 
 dfFaults = pd.read_csv("data/FaultsTracking.csv")
 #print(dfFaults.head(10))
@@ -16,50 +17,34 @@ def traceProcesses(dfInput):
     dfGrouped = dfGrouped.reset_index()
     return dfGrouped
 
-def generateHtmlGraph(csvSource, htmlPath, isDirected=False):
-    
+def generateHtmlGraph(htmlPath, csvSource, windowSize, isDirected=False):
     dfInput = pd.read_csv(csvSource)
-
     dfInputGrouped = traceProcesses(dfInput)
-
-    #print(dfInputGrouped.head(10))
-
-
     # Create graph
     if isDirected:
         createUsing=nx.DiGraph()
     else:
         createUsing=nx.Graph()
 
-
     G = nx.from_pandas_edgelist(dfInputGrouped, 'Origin', 'Destination', ['title', 'value'], create_using=createUsing)
 
-    nt = Network('500px', '500px', bgcolor='#222222', font_color='white', select_menu=True, directed = isDirected)
+    windowSize = f"{windowSize}px"
+    nt = Network(windowSize, windowSize, bgcolor='#444444', font_color='white', select_menu=False, directed = isDirected)
+
     # Take Networkx graph and translate it to a PyVis graph format
     nt.from_nx(G)
+    nt.write_html(htmlPath, local=False)
+    #nt.show(htmlPath)
 
-    #nt.show_buttons(filter_=['generate options'])
-    nt.show_buttons(filter_=True)
-    nt.save_graph(f'{htmlPath}')
 
-#generateHtmlGraph("data/FaultsTracking.csv")
-#generateHtmlGraph("data/FaultsTrackingTwo.csv")
-
-htmlPath = 'tmp/nx_1.html'
 
 # Set header title
 st.title('Generate graph')
+htmlPath = 'nx3.html'
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    
-    generateHtmlGraph(uploaded_file, htmlPath)
-    #generateHtmlGraph("data/FaultsTracking.csv", htmlPath)
-
-    # Create visualisation on streamlit sharing
-    
-
+    generateHtmlGraph(htmlPath, uploaded_file, windowSize, isDirected)
     HtmlFile = open(htmlPath,'r',encoding='utf-8')
-
     # Load HTML into HTML component for display on Streamlit
-    components.html(HtmlFile.read()) #, height=500
+    components.html(HtmlFile.read(), height = windowSize,width=windowSize)
