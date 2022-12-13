@@ -6,7 +6,6 @@ import networkx as nx
 import streamlit as st
 import streamlit.components.v1 as components
 
-isDirected = True
 windowSize = 900
 
 dfFaults = pd.read_csv("data/FaultsTracking.csv")
@@ -17,7 +16,7 @@ def traceProcesses(dfInput):
     dfGrouped = dfGrouped.reset_index()
     return dfGrouped
 
-def generateHtmlGraph(htmlPath, csvSource, windowSize, isDirected=False):
+def generateHtmlGraph(htmlPath, csvSource, height, width, isDirected=False):
     dfInput = pd.read_csv(csvSource)
     dfInputGrouped = traceProcesses(dfInput)
     # Create graph
@@ -28,8 +27,9 @@ def generateHtmlGraph(htmlPath, csvSource, windowSize, isDirected=False):
 
     G = nx.from_pandas_edgelist(dfInputGrouped, 'Origin', 'Destination', ['title', 'value'], create_using=createUsing)
 
-    windowSize = f"{windowSize}px"
-    nt = Network(windowSize, windowSize, bgcolor='#444444', font_color='white', select_menu=False, directed = isDirected)
+    height = f"{height}px"
+    width = f"{width}px"
+    nt = Network(height, width, bgcolor='#444444', font_color='white', select_menu=False, directed = isDirected)
 
     # Take Networkx graph and translate it to a PyVis graph format
     nt.from_nx(G)
@@ -39,12 +39,17 @@ def generateHtmlGraph(htmlPath, csvSource, windowSize, isDirected=False):
 
 
 # Set header title
-st.title('Generate graph')
+st.title('Upload your csv to generate a graph')
+isDirectedStr = st.radio("Graph type", ('Not directed', 'Directed'))
+isDirected = isDirectedStr == "Directed"
+height = st.slider("Graph height", min_value=200, max_value=1500, value=600, step=50)
+width = st.slider("Graph width", min_value=200, max_value=1500, value=900, step=50)
+
 htmlPath = 'nx3.html'
 
 uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
-    generateHtmlGraph(htmlPath, uploaded_file, windowSize, isDirected)
+    generateHtmlGraph(htmlPath, uploaded_file, height, width, isDirected)
     HtmlFile = open(htmlPath,'r',encoding='utf-8')
     # Load HTML into HTML component for display on Streamlit
-    components.html(HtmlFile.read(), height = windowSize,width=windowSize)
+    components.html(HtmlFile.read(), height = height,width=width)
